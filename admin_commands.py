@@ -316,3 +316,22 @@ async def end_giveaway(context: ContextTypes.DEFAULT_TYPE, chat_id: int, message
         parse_mode='HTML',
         message_thread_id=thread_id
     )
+
+async def cid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await is_admin(update, context, True): return
+    
+    chat_id = update.effective_chat.id
+    topic_id = update.message.message_thread_id
+    user_id = update.effective_user.id
+    
+    msg = (
+        f"📊 <b>ID Information</b>\n\n"
+        f"<b>Chat ID:</b> <code>{chat_id}</code>\n"
+        f"<b>Topic ID:</b> <code>{topic_id if topic_id else 'None'}</code>\n"
+        f"<b>Your User ID:</b> <code>{user_id}</code>"
+    )
+    await update.message.reply_text(msg, parse_mode='HTML')
+
+async def ping_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not await is_admin(update, context, True): return
+    await update.message.reply_text("🏓 <b>Pong!</b> The bot is online and running smoothly.", parse_mode='HTML')

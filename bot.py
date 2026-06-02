@@ -8,7 +8,8 @@ from handlers import greet_new_members, private_chat_interceptor
 from commands import start_command, commands_callback, back_callback
 from admin_commands import (
     ban_command, unban_command, kick_command, mute_command, unmute_command,
-    del_command, announce_command, pin_command, unpin_command, gw_command, join_gw_callback
+    del_command, announce_command, pin_command, unpin_command, gw_command, join_gw_callback,
+    cid_command, ping_command
 )
 from automod import (
     addfilter_command, rmfilter_command, filters_command, filterlinks_command, rmwarn_command, automod_handler
@@ -57,6 +58,8 @@ def main():
     application.add_handler(CommandHandler("unpin", unpin_command))
     application.add_handler(CommandHandler("gw", gw_command))
     application.add_handler(CommandHandler("giveaway", gw_command))
+    application.add_handler(CommandHandler("cid", cid_command))
+    application.add_handler(CommandHandler("ping", ping_command))
     
     # Automod Commands
     application.add_handler(CommandHandler("addfilter", addfilter_command))
