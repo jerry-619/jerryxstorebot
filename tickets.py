@@ -1,4 +1,3 @@
-from click import style
 import os
 import json
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -36,10 +35,10 @@ async def ticketpanel_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     text = (
         f"<tg-emoji emoji-id='5224607267797606837'>⚡</tg-emoji> <b>𝙉𝙀𝙀𝘿 𝘼𝙎𝙎𝙄𝙎𝙏𝘼𝙉𝘾𝙀?</b> <tg-emoji emoji-id='5224607267797606837'>⚡</tg-emoji>\n"
-        f"────────────────────────\n\n"
-        f"<tg-emoji emoji-id='5395804191769763641'>🛰️</tg-emoji> <b>𝗦𝗨𝗣𝗣𝗢𝗥𝗧</b> ➛ Private Ticket System\n"
+        f"────────────────────\n\n"
+        f"<tg-emoji emoji-id='5395804191769763641'>🛰️</tg-emoji> <b>𝗦𝗨𝗣𝗣𝗢𝗥𝗧</b> ➛ Private Ticket System\n\n"
         f"<tg-emoji emoji-id='5123270130083563228'>💬</tg-emoji> <b>𝗦𝗧𝗔𝗙𝗙</b> ➛ Active & Ready\n\n"
-        f"────────────────────────\n"
+        f"────────────────────\n"
         f"<tg-emoji emoji-id='5377599075237502153'>🎫</tg-emoji> <i>Click the button below to open a private ticket with our staff team.</i>\n"
         f"<tg-emoji emoji-id='5096218811145651199'>💀</tg-emoji> <b><i>— Stay sharp.</i></b>"
     )
