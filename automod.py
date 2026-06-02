@@ -45,7 +45,7 @@ async def addfilter_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         data["banned_words"].append(word)
         save_data()
-        await update.message.reply_text(f"✅ Added '{word}' to the filter list.")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> Added '{word}' to the filter list.")
 
 async def rmfilter_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await is_admin(update, context, True): return
@@ -57,7 +57,7 @@ async def rmfilter_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if word in data["banned_words"]:
         data["banned_words"].remove(word)
         save_data()
-        await update.message.reply_text(f"✅ Removed '{word}' from the filter list.")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> Removed '{word}' from the filter list.")
     else:
         await update.message.reply_text(f"'{word}' is not in the filter list.")
 
@@ -83,11 +83,11 @@ async def filterlinks_command(update: Update, context: ContextTypes.DEFAULT_TYPE
     if arg == "on":
         data["filter_links"] = True
         save_data()
-        await update.message.reply_text("✅ Link filtering turned ON.")
+        await update.message.reply_text("<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> Link filtering turned ON.")
     elif arg == "off":
         data["filter_links"] = False
         save_data()
-        await update.message.reply_text("✅ Link filtering turned OFF.")
+        await update.message.reply_text("<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> Link filtering turned OFF.")
     else:
         await update.message.reply_text("Invalid option. Use 'on' or 'off'.")
 
@@ -103,7 +103,7 @@ async def rmwarn_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id in data["user_strikes"] and data["user_strikes"][user_id] > 0:
         data["user_strikes"][user_id] = 0
         save_data()
-        await update.message.reply_text(f"✅ Cleared all warnings for <b>{user_name}</b>.", parse_mode='HTML')
+        await update.message.reply_text(f"<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> Cleared all warnings for <b>{user_name}</b>.", parse_mode='HTML')
     else:
         await update.message.reply_text(f"<b>{user_name}</b> currently has 0 warnings.", parse_mode='HTML')
 
@@ -179,7 +179,7 @@ async def automod_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             # Warn the user
             msg = await context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"⚠️ <b>{user_name}</b>, your message was deleted for {reason}. Warning {strikes}/10.",
+                text=f"<tg-emoji emoji-id='6089079808187174973'>✅</tg-emoji> <b>{user_name}</b>, your message was deleted for {reason}. Warning {strikes}/10.",
                 parse_mode='HTML',
                 message_thread_id=update.message.message_thread_id
             )

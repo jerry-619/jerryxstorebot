@@ -1,5 +1,6 @@
 import os
 import asyncio
+import time
 import random
 from datetime import timedelta
 from telegram import Update, ChatPermissions, InlineKeyboardButton, InlineKeyboardMarkup
@@ -23,7 +24,7 @@ async def is_admin(update: Update, context: ContextTypes.DEFAULT_TYPE, send_warn
     is_adm = member.status in ['administrator', 'creator']
     
     if not is_adm and send_warning:
-        msg = await update.message.reply_text("⛔ This command is only for Admins.")
+        msg = await update.message.reply_text("<tg-emoji emoji-id='6267000941547885720'>⛔</tg-emoji> This command is only for Admins.")
         context.application.create_task(delete_later(msg, 3))
         
     return is_adm
@@ -50,7 +51,7 @@ async def unban_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         user_id = int(context.args[0])
         await context.bot.unban_chat_member(update.effective_chat.id, user_id, only_if_banned=True)
-        await update.message.reply_text(f"✅ User ID {user_id} has been unbanned.")
+        await update.message.reply_text(f"<tg-emoji emoji-id='5364035134725043602'>✅</tg-emoji> User ID {user_id} has been unbanned.")
     except (ValueError, BadRequest) as e:
         await update.message.reply_text(f"Error unbanning user: {e}")
 
@@ -178,7 +179,7 @@ async def announce_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     command_text = update.message.text.split()[0]
     announcement = update.message.text[len(command_text):].strip()
     
-    text = f"📢 <b>ANNOUNCEMENT</b>\n\n{announcement}"
+    text = f"<tg-emoji emoji-id='5215668805199473901'>📢</tg-emoji> <b>ANNOUNCEMENT</b>\n\n{announcement}"
     
     msg = await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -231,7 +232,7 @@ async def gw_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     msg_text = (
-        f"🎁 <b>GIVEAWAY STARTED!</b> 🎁\n\n"
+        f"<tg-emoji emoji-id='6276134137963222688'>🎁</tg-emoji> <b>GIVEAWAY STARTED!</b> <tg-emoji emoji-id='6276134137963222688'>🎁</tg-emoji>\n\n"
         f"<b>Prize:</b> {prize}\n"
         f"<b>Time:</b> {duration_secs} seconds\n\n"
         f"Click the button below to enter!"
@@ -294,7 +295,7 @@ async def end_giveaway(context: ContextTypes.DEFAULT_TYPE, chat_id: int, message
     if not participants:
         await context.bot.send_message(
             chat_id=chat_id,
-            text=f"🎁 The giveaway for <b>{prize}</b> has ended.\n\nSadly, no one joined!",
+            text=f"<tg-emoji emoji-id='6276134137963222688'>🎁</tg-emoji> The giveaway for <b>{prize}</b> has ended.\n\nSadly, no one joined!",
             parse_mode='HTML',
             message_thread_id=thread_id
         )
@@ -312,7 +313,7 @@ async def end_giveaway(context: ContextTypes.DEFAULT_TYPE, chat_id: int, message
         
     await context.bot.send_message(
         chat_id=chat_id,
-        text=f"🎉 <b>GIVEAWAY ENDED!</b> 🎉\n\nPrize: <b>{prize}</b>\nWinner: {winner_mention}\n\nCongratulations! Please contact an admin to claim your prize.",
+        text=f"<tg-emoji emoji-id='5238078046174456159'>🎉</tg-emoji> <b>GIVEAWAY ENDED!</b> <tg-emoji emoji-id='5238078046174456159'>🎉</tg-emoji>\n\nPrize: <b>{prize}</b>\nWinner: {winner_mention}\n\nCongratulations! Please contact an admin to claim your prize.",
         parse_mode='HTML',
         message_thread_id=thread_id
     )
@@ -325,7 +326,7 @@ async def cid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     
     msg = (
-        f"📊 <b>ID Information</b>\n\n"
+        f"<tg-emoji emoji-id='5231200819986047254'>📊</tg-emoji> <b>ID Information</b>\n\n"
         f"<b>Chat ID:</b> <code>{chat_id}</code>\n"
         f"<b>Topic ID:</b> <code>{topic_id if topic_id else 'None'}</code>\n"
         f"<b>Your User ID:</b> <code>{user_id}</code>"
@@ -334,4 +335,11 @@ async def cid_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def ping_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await is_admin(update, context, True): return
-    await update.message.reply_text("🏓 <b>Pong!</b> The bot is online and running smoothly.", parse_mode='HTML')
+    
+    start_time = time.time()
+    msg = await update.message.reply_text("<tg-emoji emoji-id='5386367538735104399'>🏓</tg-emoji> <i>Pinging...</i>", parse_mode='HTML')
+    end_time = time.time()
+    
+    ping_ms = round((end_time - start_time) * 1000)
+    
+    await msg.edit_text(f"<tg-emoji emoji-id='5386367538735104399'>🏓</tg-emoji> <b>Pong!</b>\nLatency: <code>{ping_ms}ms</code>", parse_mode='HTML')

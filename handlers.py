@@ -2,10 +2,32 @@ import os
 from telegram import Update
 from telegram.ext import ContextTypes, ApplicationHandlerStop
 
+from tickets import process_user_ticket_message, process_owner_reply
+
 async def private_chat_interceptor(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Intercepts all private messages and stops further processing."""
+    """Intercepts all private messages and handles the ticket system relay."""
     if update.effective_chat.type == 'private':
-        await update.message.reply_text("⛔ This bot is exclusively for private use in @jerryxxstore. It cannot be used here.")
+        owner_id = os.getenv("OWNER_ID")
+        user_id = str(update.effective_user.id)
+        
+        # If the sender is the Owner
+        if owner_id and user_id == owner_id:
+            # If owner is replying to a message in DM, treat it as a ticket reply
+            if update.message and update.message.reply_to_message:
+                await process_owner_reply(update, context)
+            # Let the owner use other commands normally
+            return
+            
+        # If it's a regular user sending a DM
+        if update.message:
+            text = update.message.text
+            if text and text.startswith("/start"):
+                await update.message.reply_text("<tg-emoji emoji-id='5082507274082059002'>👋</tg-emoji> <b>Welcome to Support!</b>\n\nPlease describe your issue below and the owner will reply to you shortly.", parse_mode='HTML')
+            else:
+                # Forward their message to the owner
+                await process_user_ticket_message(update, context)
+                
+        # Block regular users from executing any other bot commands in DM
         raise ApplicationHandlerStop
 
 async def greet_new_members(update: Update, context: ContextTypes.DEFAULT_TYPE):
