@@ -14,7 +14,7 @@ from admin_commands import (
 from automod import (
     addfilter_command, rmfilter_command, filters_command, filterlinks_command, rmwarn_command, automod_handler
 )
-from tickets import ticketpanel_command
+from tickets import ticketpanel_command, close_ticket_callback
 
 # Enable logging
 logging.basicConfig(
@@ -71,6 +71,7 @@ def main():
     
     # Ticket System
     application.add_handler(CommandHandler("ticketpanel", ticketpanel_command))
+    application.add_handler(CallbackQueryHandler(close_ticket_callback, pattern="^close_ticket_"))
     
     # Global Message Handler for Automod (Group 1 to run alongside other handlers)
     application.add_handler(MessageHandler(filters.TEXT | filters.Entity("url") | filters.Entity("text_link"), automod_handler), group=1)
